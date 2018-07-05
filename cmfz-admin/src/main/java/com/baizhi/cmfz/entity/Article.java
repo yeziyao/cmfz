@@ -2,10 +2,11 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Component
-public class Article {
+public class Article implements Serializable{
     private Integer articleId;
     private String articleName;
     private String articleContent;

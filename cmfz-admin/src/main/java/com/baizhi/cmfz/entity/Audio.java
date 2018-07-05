@@ -2,10 +2,11 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 
 
 @Component
-public class Audio {
+public class Audio implements Serializable{
     private Integer audioId;
     private String audioName;
     private String reader;

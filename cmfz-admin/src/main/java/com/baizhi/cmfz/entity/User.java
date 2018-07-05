@@ -2,11 +2,12 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class User {
+public class User implements Serializable{
     //id
     private Integer userId;
     //用户名

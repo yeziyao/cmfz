@@ -2,8 +2,10 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
-public class Admin {
+public class Admin implements Serializable{
     private Integer adminId;
     private String adminName;
     private String password;

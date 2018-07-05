@@ -2,10 +2,11 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Component
-public class Slideshow {
+public class Slideshow implements Serializable{
     private Integer slideshowId;
     private String slideshowDec;//轮播描述
     private Date publishTime;//发布时间

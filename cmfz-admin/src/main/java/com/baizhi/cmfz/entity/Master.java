@@ -2,11 +2,12 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Master {
+public class Master implements Serializable{
     private Integer masterId;
     private String masterName;
     private String masterImg;

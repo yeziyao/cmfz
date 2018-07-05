@@ -2,12 +2,13 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Component
-public class Album {
+public class Album implements Serializable{
     private Integer albumId;
     private String albumName;
     private String author;

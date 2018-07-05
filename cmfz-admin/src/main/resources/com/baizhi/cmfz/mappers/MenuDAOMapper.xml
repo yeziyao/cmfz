@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.MenuDAO">
+    <resultMap id="rs" type="Menu">
+        <id property="menuId" column="menuId"></id>
+        <result property="menuUrl" column="menuUrl"></result>
+        <collection property="secondMenu" select="com.baizhi.cmfz.dao.MenuDAO.selectByParId" column="menuId"/>
+    </resultMap>
+
+
+    <select id="selectAll" resultMap="rs">
+        SELECT *
+        FROM menu
+        WHERE menulevel=1
+    </select>
+
+    <select id="selectByParId" resultType="menu">
+        select * from menu
+        where parentid=#{parId}
+    </select>
+</mapper>

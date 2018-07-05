@@ -2,11 +2,12 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Category {
+public class Category implements Serializable{
     private Integer categoryId;
     private String categoryName;
     //分类所属的id

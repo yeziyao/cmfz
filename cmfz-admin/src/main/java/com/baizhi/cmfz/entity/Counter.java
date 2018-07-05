@@ -2,13 +2,14 @@ package com.baizhi.cmfz.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 计数器
  */
 @Component
-public class Counter {
+public class Counter implements Serializable{
     private Integer counterId;
     private String counterName;
     //计数器中记录次数

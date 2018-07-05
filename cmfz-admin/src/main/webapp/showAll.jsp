@@ -1,16 +1,78 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: dyy
-  Date: 2018/7/4
-  Time: 20:08
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.util.* , com.baizhi.cmfz.entity.*" %>
+<%@ page isELIgnored="false"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>首页</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>持名法州主页</title>
+	<base href="<%=basePath %>"/>
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="themes/IconExtension.css">
+<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+	$(function () {
+		$.ajax({
+			url:"menu/showMenu",
+			dataType:"json",
+			success:function (res) {
+                $.each(res,function(index,obj){
+                    console.log(obj);
+                    var content = "";
+                    $.each(obj.secondMenu,function(index1,obj1){
+                        content += "<p style=\"text-align: center\"><a class=\"easyui-linkbutton\" data-options=\"iconCls:'"+obj1.menuIcon+"'\" onclick=\"addTab('"+obj1.menuName+"','"+obj1.menuUrl+"','"+obj1.menuIcon+"')\">"+obj1.menuName+"</a></p>"
+                    });
+
+                    $("#aa").accordion("add",{
+                        title:obj.menuName,
+                        iconCls:obj.menuIcon,
+                        content:content,
+                    });
+                });
+            }
+		});
+    });
+
+    function addTab(e,path,menuIcon) {
+        console.log(path);
+        var exists = $('#tt').tabs('exists',e);
+        if (!exists){
+            $('#tt').tabs('add',{
+                title:e,
+                closable:true,
+                href:'/'+path
+            })
+        }else{
+            $('#tt').tabs('select',e);
+        }
+    }
+</script>
+
 </head>
-<body>
-<h1>helloworld</h1>
-</body>
+<body class="easyui-layout">   
+    <div data-options="region:'north',split:true" style="height:60px;background-color:  #5C160C">
+    	<div style="font-size: 24px;color: #FAF7F7;font-family: 楷体;font-weight: 900;width: 500px;float:left;padding-left: 20px;padding-top: 10px" >持名法州后台管理系统</div>
+    	<div style="font-size: 16px;color: #FAF7F7;font-family: 楷体;width: 300px;float:right;padding-top:15px">欢迎您:aa${adminname} &nbsp;<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'">修改密码</a>&nbsp;&nbsp;<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-01'">退出系统</a></div>
+    </div>
+    <div data-options="region:'south',split:true" style="height: 40px;background: #5C160C">
+    	<div style="text-align: center;font-size:15px; color: #FAF7F7;font-family: 楷体" >&copy;百知教育 gaozhy@zparkhr.com.cn</div>
+    </div>   
+       
+    <div data-options="region:'west',title:'导航菜单',split:true" style="width:220px;">
+    	<div id="aa" class="easyui-accordion" data-options="fit:true">
+		</div>  
+    </div>
+
+    <div data-options="region:'center'">
+    	<div id="tt" class="easyui-tabs" data-options="fit:true,narrow:true,pill:true">   
+		    <div title="主页" data-options="iconCls:'icon-neighbourhood',"  style="background-image:url(img/shouye.jpg);background-repeat: no-repeat;background-size:100% 100%;"></div>
+		</div>
+    </div>
+</body> 
 </html>
