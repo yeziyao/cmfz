@@ -43,7 +43,7 @@ public class AdminController {
                         e.printStackTrace();
                     }
                 }
-                return "forward:/menu/showMenu";
+                return "showAll";
             }
         }
         return "adminLogin";
