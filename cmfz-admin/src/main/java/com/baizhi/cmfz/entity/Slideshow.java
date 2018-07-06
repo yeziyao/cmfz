@@ -1,5 +1,7 @@
 package com.baizhi.cmfz.entity;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -11,7 +13,7 @@ public class Slideshow implements Serializable{
     private String slideshowDec;//轮播描述
     private Date publishTime;//发布时间
     private String slideshowImg;
-    private Integer status;//是否显示的状态
+    private String status;//是否显示的状态
 
     @Override
     public String toString() {
@@ -20,7 +22,7 @@ public class Slideshow implements Serializable{
                 ", slideshowDec='" + slideshowDec + '\'' +
                 ", publishTime=" + publishTime +
                 ", slideshowImg='" + slideshowImg + '\'' +
-                ", status=" + status +
+                ", status='" + status + '\'' +
                 '}';
     }
 
@@ -56,11 +58,11 @@ public class Slideshow implements Serializable{
         this.slideshowImg = slideshowImg;
     }
 
-    public Integer getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -68,7 +70,7 @@ public class Slideshow implements Serializable{
 
     }
 
-    public Slideshow(Integer slideshowId, String slideshowDec, Date publishTime, String slideshowImg, Integer status) {
+    public Slideshow(Integer slideshowId, String slideshowDec, Date publishTime, String slideshowImg, String status) {
 
         this.slideshowId = slideshowId;
         this.slideshowDec = slideshowDec;

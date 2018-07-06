@@ -1,7 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page import="java.util.* , com.baizhi.cmfz.entity.*" %>
-<%@ page isELIgnored="false"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; %>
@@ -15,6 +13,7 @@
 <link rel="stylesheet" type="text/css" href="themes/IconExtension.css">
 <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="js/datagrid-detailview.js"></script>
 <script type="text/javascript" src="js/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript">
 	$(function () {
@@ -40,7 +39,6 @@
     });
 
     function addTab(e,path,menuIcon) {
-        console.log(path);
         var exists = $('#tt').tabs('exists',e);
         if (!exists){
             $('#tt').tabs('add',{

@@ -25,12 +25,12 @@ public class MenuController {
     private MenuService menuService;
 
     /*查询所有的一级菜单*/
-    @RequestMapping(value = "/showMenu",produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/showMenu")
     @ResponseBody
-    public String show(HttpSession session){
+    public List<Menu> show(HttpSession session){
         List<Menu> ms = menuService.queryAll();
-        String menus = JSON.toJSONString(ms);
-        return menus;
+//        String menus = JSON.toJSONString(ms);
+        return ms;
     }
 
 }

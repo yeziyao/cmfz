@@ -52,11 +52,13 @@ public class AdminController {
     @RequestMapping("/tologin")
     public String toLogin(HttpServletRequest request) throws Exception{
         Cookie cs[] = request.getCookies();
-        for(Cookie c:cs){
-            if(c.getName()!=null && c.getName().equals("adminname")){
-                String cval = c.getValue();
-                cval =  URLDecoder.decode(cval,"utf-8");
-                request.setAttribute("adminname",cval);
+        if(cs!=null){
+            for(Cookie c:cs){
+                if(c.getName()!=null && c.getName().equals("adminname")){
+                    String cval = c.getValue();
+                    cval =  URLDecoder.decode(cval,"utf-8");
+                    request.setAttribute("adminname",cval);
+                }
             }
         }
         return "adminLogin";
