@@ -32,4 +32,8 @@ public class SlideshowServiceImpl implements SlideshowService{
     public Integer addSlideshow(Slideshow slideshow) {
         return slideshowDAO.insertSlideshow(slideshow);
     }
+
+    public Integer modifySlideshow(Slideshow slideshow) {
+        return slideshowDAO.updateSlideshow(slideshow);
+    }
 }

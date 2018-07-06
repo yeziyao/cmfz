@@ -73,9 +73,12 @@
                     field: 'operation',
                     title: '操作',
                     width: '15%',
-
                     formatter: function (value, row, index) {
-                        var str = '<a name="update" class="easyui-linkbutton" ></a>';
+//                        var sdata= JSON.stringify(row)
+//                        console.log("原始数据"+sdata);
+//                        var data= encodeURI(sdata);
+//                        console.log("编码后"+data);
+                        var str = '<a name="update"></a>';
                         return str;
                     }
                 }
@@ -86,8 +89,12 @@
                     plain: false,
                     iconCls: 'icon-edit',
                     onClick:function () {
+//                        $("#dg").datagrid("selectRow",rowIndex);
+//                        var rowData = $(this).attr("data");
+//                        console.log("获取数据"+rowData);
+//                        var jsondata= decodeURIComponent(rowData)
+//                        console.log("解码数据"+jsondata);
                         var rowData = $("#dg").datagrid('getSelected');
-                        //            console.log(rowData);
                         $('#dd').dialog({
                             title: '修改图片信息',
                             width: 400,
@@ -100,6 +107,7 @@
                                 text: '修改',
                                 handler: function () {
                                     $("#ff").form("submit", {
+                                        url:'${pageContext.request.contextPath}/slideshow/update',
                                         success: function (e) {
                                             console.log(e);
                                             $('#dg').datagrid('reload');
@@ -133,6 +141,6 @@
 <table id="dg"></table>
 <div id="tb">
     <a id="pic_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',text:'添加'"></a>
-    <a id="pic_help" class="easyui-linkbutton" data-options="iconCls:'icon-edit',text:'帮助'"></a>
+    <a id="pic_help" class="easyui-linkbutton" data-options="iconCls:'icon-help',text:'帮助'"></a>
 </div>
 <div id="dd"></div>

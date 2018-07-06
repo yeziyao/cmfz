@@ -43,4 +43,12 @@ public class SlideshowController {
         }
         return null;
     }
+
+    @RequestMapping("update")
+    public String update(Slideshow slideshow){
+        slideshowService.modifySlideshow(slideshow);
+        return null;
+    }
+
+
 }

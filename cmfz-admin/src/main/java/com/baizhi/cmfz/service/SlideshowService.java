@@ -11,4 +11,7 @@ public interface SlideshowService {
     //插入轮播图
     public Integer addSlideshow(Slideshow slideshow);
 
+    //更新轮播图信息
+    public Integer modifySlideshow(Slideshow slideshow);
+
 }

@@ -13,4 +13,11 @@
         INSERT INTO slideshow
         VALUES(#{slideshowId},#{slideshowDec},#{publishTime},#{slideshowImg},#{status})
     </insert>
+
+    <update id="updateSlideshow">
+        UPDATE slideshow
+        SET slideshowdec=#{slideshowDec},publishtime=#{publishTime},slideshowimg=#{slideshowImg},status=#{status}
+        WHERE slideshowid=#{slideshowId}
+    </update>
+
 </mapper>

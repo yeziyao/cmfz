@@ -14,4 +14,7 @@ public interface SlideshowDAO {
 
     //添加轮播图
     public Integer insertSlideshow(Slideshow slideshow);
+
+    //修改轮播图信息
+    public Integer updateSlideshow(Slideshow slideshow);
 }
