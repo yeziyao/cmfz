@@ -13,7 +13,7 @@
                         text: '添加',
                         handler: function () {
                             $("#ff").form("submit", {
-                                url:'${pageContext.request.contextPath}/slideshow/add',
+                                url: '${pageContext.request.contextPath}/slideshow/add',
                                 success: function (e) {
                                     $('#dg').datagrid('reload');
                                     $('#dd').dialog('close');
@@ -46,7 +46,16 @@
                 {field: 'slideshowId', title: '标识编号', width: '15%'},
                 {field: 'slideshowImg', title: '文件名', width: '15%'},
                 {field: 'slideshowDec', title: '描述信息', width: '20%'},
-                {field: 'status', title: '轮播图状态', width: '15%'},
+                {
+                    field: 'status', title: '轮播图状态', width: '15%',
+                    formatter: function (value, row, index) {
+                        if (value == '展示中') {
+                            return '<span style="color: red;">展示中</span>';
+                        } else {
+                            return '<span>未展示</span>';
+                        }
+                    }
+                },
                 {
                     field: 'publishTime', title: '轮播图创建时间', width: '20%',
                     formatter: function (value, row, index) {
@@ -66,78 +75,64 @@
                     width: '15%',
 
                     formatter: function (value, row, index) {
-                        return '<a href="#" onclick="update(' + index + ')">修改</a>';
+                        var str = '<a name="update" class="easyui-linkbutton" ></a>';
+                        return str;
                     }
                 }
             ]],
+            onLoadSuccess: function (data) {
+                $("a[name='update']").linkbutton({
+                    text: '修改',
+                    plain: false,
+                    iconCls: 'icon-edit',
+                    onClick:function () {
+                        var rowData = $("#dg").datagrid('getSelected');
+                        //            console.log(rowData);
+                        $('#dd').dialog({
+                            title: '修改图片信息',
+                            width: 400,
+                            height: 200,
+                            href: '${pageContext.request.contextPath}/modifySlideshow.jsp',
+                            onLoad: function () {
+                                $("#ff").form('load', rowData);
+                            },
+                            buttons: [{
+                                text: '修改',
+                                handler: function () {
+                                    $("#ff").form("submit", {
+                                        success: function (e) {
+                                            console.log(e);
+                                            $('#dg').datagrid('reload');
+                                            $('#dd').dialog('close');
+                                        }
+                                    });
+
+                                }
+                            }, {
+                                text: '关闭',
+                                handler: function () {
+                                    $('#dd').dialog('close');
+                                }
+                            }],
+                        });
+                    }
+                });
+            },
             view: detailview,
             detailFormatter: function (rowIndex, rowData) {
                 return '<table><tr>' +
-                    '<td rowspan=2 style="border:0"><img src="img/6.gif" style="height:50px;"></td>' +
+                    '<td rowspan=2 style="border:0"><img src="http://localhost:8989/upload/' + rowData.slideshowImg + '" style="height:50px;"></td>' +
                     '</tr></table>';
             }
         });
 
     });
-    /*
-        function update(index) {
-    //        $('#dg').datagrid('selectRow',index);
-            var rowData = $("#dg").datagrid('getSelected');
-    //            console.log(rowData);
-            $('#dd').dialog({
-                title: '编辑员工信息',
-                width: 400,
-                height: 200,
-                href: '/form.html',
-                onLoad: function () {
-                    $("#ff").form('load', rowData);
-                },
-                buttons: [{
-                    text: '修改',
-                    handler: function () {
-                        $("#ff").form("submit", {
-                            success: function (e) {
-                                console.log(e);
-                                $('#dg').datagrid('reload');
-                                $('#dd').dialog('close');
-                            }
-                        });
-
-                    }
-                }, {
-                    text: '关闭',
-                    handler: function () {
-                        $('#dd').dialog('close');
-                    }
-                }],
-            });
-        }*/
-    /*
-        $(function () {
-            $("#del").linkbutton({
-                onClick: function () {
-                    var r = $("#dg").datagrid('getSelected');
-    //                    console.log(r.empid);
-                    $.messager.confirm('确认', '您确认想要删除记录吗？', function (mes) {
-                        if (mes) {
-                            $.ajax({
-                                url: '/emp/delete?empid=' + r.empid,
-                                success: function () {
-                                    $('#dg').datagrid('reload');
-                                }
-                            });
-                        }
-                    });
-
-                }
-            })
-        });*/
 </script>
 
 
 <table id="dg"></table>
 <div id="tb">
     <a id="pic_add" class="easyui-linkbutton" data-options="iconCls:'icon-add',text:'添加'"></a>
-    <a id="pic_help" class="easyui-linkbutton" data-options="iconCls:'icon-edit',text:'帮助',onClick:update"></a>
+    <a id="pic_help" class="easyui-linkbutton" data-options="iconCls:'icon-edit',text:'帮助'"></a>
 </div>
 <div id="dd"></div>
