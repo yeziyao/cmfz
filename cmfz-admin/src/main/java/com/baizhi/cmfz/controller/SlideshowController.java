@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("slideshow")
@@ -29,9 +30,15 @@ public class SlideshowController {
 
     @RequestMapping("add")
     public String add(Slideshow slideshow, MultipartFile file, HttpSession session) throws Exception{
+        //生成唯一的UUID文件名
+        String uuidName = UUID.randomUUID().toString().replace("-","");
+        //源文件名
+        String oldName = file.getOriginalFilename();
+        //获取后缀
+        String suffix = oldName.substring(oldName.lastIndexOf("."));
         //添加数据库的操作
         slideshow.setPublishTime(new Date());
-        slideshow.setSlideshowImg(file.getOriginalFilename());
+        slideshow.setSlideshowImg(uuidName+suffix);
         Integer i = slideshowService.addSlideshow(slideshow);
         if(i==1){
             //添加成功,将图片放进文件中
@@ -39,7 +46,7 @@ public class SlideshowController {
             String[] strings = realPath.split("ROOT");
             String uploadPath = strings[0]+"upload";//文件上传的路径
 //        System.out.println(uploadPath+"//"+file.getOriginalFilename());
-            file.transferTo(new File(uploadPath+"/"+file.getOriginalFilename()));
+            file.transferTo(new File(uploadPath+"/"+uuidName+suffix));
         }
         return null;
     }

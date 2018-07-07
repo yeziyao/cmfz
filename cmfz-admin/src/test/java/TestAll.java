@@ -2,6 +2,7 @@ import com.baizhi.cmfz.entity.Admin;
 import com.baizhi.cmfz.entity.Menu;
 import com.baizhi.cmfz.entity.User;
 import com.baizhi.cmfz.service.AdminService;
+import com.baizhi.cmfz.service.MasterService;
 import com.baizhi.cmfz.service.MenuService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -9,6 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import java.util.List;
+import java.util.Map;
 
 public class TestAll {
    /* @Test
@@ -23,10 +25,8 @@ public class TestAll {
     @Test
     public void test02(){
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext.xml");
-        MenuService menu = (MenuService) ctx.getBean("menuServiceImpl");
-        List<Menu> menus = menu.queryAll();
-        for(Menu m:menus){
-            System.out.println(m);
-        }
+        MasterService masterService = (MasterService) ctx.getBean("masterServiceImpl");
+        Map<String, Object> map = masterService.queryBlur("masterName", "1", 1, 5);
+        System.out.println(map);
     }
 }

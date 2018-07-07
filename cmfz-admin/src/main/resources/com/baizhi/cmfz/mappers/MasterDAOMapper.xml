@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.MasterDAO">
+
+    <select id="selectForPage" resultType="com.baizhi.cmfz.entity.Master">
+        SELECT * FROM master LIMIT #{start},#{pagesize}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from master
+    </select>
+
+    <insert id="insertMaster">
+        INSERT INTO master
+        VALUES(#{masterId},#{masterName},#{masterImg},#{intro})
+    </insert>
+
+    <update id="updateMaster">
+        UPDATE master
+        SET masterName=#{masterName},masterImg=#{masterImg},intro=#{intro}
+        WHERE masterid=#{masterId}
+    </update>
+
+
+    <select id="selectForBlur" resultType="com.baizhi.cmfz.entity.Master">
+        SELECT * FROM master
+        WHERE masterName like concat('%',#{value},'%')
+        LIMIT #{start},#{pagesize}
+    </select>
+
+    <select id="countBlur" resultType="java.lang.Integer">
+        SELECT count(a.masterName)
+        FROM (SELECT e.* FROM master e
+        WHERE masterName like concat('%',#{value},'%')) a
+    </select>
+
+
+</mapper>
