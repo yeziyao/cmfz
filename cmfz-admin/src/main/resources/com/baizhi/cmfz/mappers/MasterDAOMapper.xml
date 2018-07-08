@@ -34,5 +34,15 @@
         WHERE masterName like concat('%',#{value},'%')) a
     </select>
 
+    <insert id="insertBatch">
+        insert into master
+        (masterName,masterImg,intro)
+        values
+        <foreach collection="masters" item="master" index="index" separator=",">
+            (
+            #{master.masterName},#{master.masterImg},#{master.intro}
+            )
+        </foreach>
+    </insert>
 
 </mapper>

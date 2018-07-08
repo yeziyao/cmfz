@@ -37,6 +37,40 @@
             }
         });
 
+
+        $("#pic_batchAdd").linkbutton({
+            onClick: function () {
+                $('#dd1').dialog({
+                    title: '批量上传',
+                    width: 400,
+                    height: 200,
+                    close: true,
+                    href: '${pageContext.request.contextPath}/batchAddMaster.jsp',
+                    buttons: [{
+                        text: '上传',
+                        handler: function () {
+                            $("#ff2").form("submit", {
+                                url: '${pageContext.request.contextPath}/master/batchAdd',
+                                success: function (e) {
+                                    $('#dg1').datagrid('reload');
+                                    $('#dd1').dialog('close');
+                                }
+                            });
+                        }
+                    }, {
+                        text: '关闭',
+                        handler: function () {
+                            $('#dd1').dialog('close');
+                        }
+                    }],
+                });
+            }
+        });
+
+
+
+
+
         $("#pic_edit").linkbutton({
             onClick: function () {
                 var rowData = $("#dg1").datagrid('getSelected');
@@ -123,6 +157,8 @@
     <div id="mm" style="width:120px">
         <div data-options="name:'masterName',iconCls:'icon-ok'">法名</div>
     </div>
+
+    <a id="pic_batchAdd" class="easyui-linkbutton" data-options="iconCls:'icon-add',text:'批量插入'"></a>
 </div>
 <div id="dd1"></div>
 

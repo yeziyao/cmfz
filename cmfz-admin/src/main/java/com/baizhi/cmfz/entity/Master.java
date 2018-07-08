@@ -8,6 +8,7 @@ import java.util.List;
 
 @Component
 public class Master implements Serializable{
+
     private Integer masterId;
     private String masterName;
     private String masterImg;

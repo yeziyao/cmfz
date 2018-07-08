@@ -1,9 +1,11 @@
 package com.baizhi.cmfz.controller;
 
+
+import cn.hutool.poi.excel.ExcelReader;
+import cn.hutool.poi.excel.ExcelUtil;
 import com.baizhi.cmfz.entity.Master;
-import com.baizhi.cmfz.entity.Slideshow;
 import com.baizhi.cmfz.service.MasterService;
-import com.baizhi.cmfz.service.SlideshowService;
+import jdk.internal.util.xml.impl.Input;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +14,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
-import java.util.Date;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,45 +35,45 @@ public class MasterController {
     }
 
     @RequestMapping("add")
-    public String add(Master master, MultipartFile file, HttpSession session) throws Exception{
+    public String add(Master master, MultipartFile file, HttpSession session) throws Exception {
         //生成唯一的UUID文件名
-        String uuidName = UUID.randomUUID().toString().replace("-","");
+        String uuidName = UUID.randomUUID().toString().replace("-", "");
         //源文件名
         String oldName = file.getOriginalFilename();
         //获取后缀
         String suffix = oldName.substring(oldName.lastIndexOf("."));
         //添加数据库的操作
-        master.setMasterImg(uuidName+suffix);
+        master.setMasterImg(uuidName + suffix);
         Integer i = masterService.addMaster(master);
-        if(i==1){
+        if (i == 1) {
             //添加成功,将图片放进文件中
             String realPath = session.getServletContext().getRealPath("/");
             String[] strings = realPath.split("ROOT");
-            String uploadPath = strings[0]+"upload";//文件上传的路径
+            String uploadPath = strings[0] + "upload";//文件上传的路径
 //            System.out.println(uploadPath+"//"+file.getOriginalFilename());
-            file.transferTo(new File(uploadPath+"/"+uuidName+suffix));
+            file.transferTo(new File(uploadPath + "/" + uuidName + suffix));
         }
         return null;
     }
 
     @RequestMapping("update")
-    public String update(Master master,HttpSession session, MultipartFile file) throws Exception{
+    public String update(Master master, HttpSession session, MultipartFile file) throws Exception {
 
         //先判断是否修改了头像
-        if(file!=null){
+        if (file != null) {
             //生成唯一的UUID文件名
-            String uuidName = UUID.randomUUID().toString().replace("-","");
+            String uuidName = UUID.randomUUID().toString().replace("-", "");
             //源文件名
             String oldName = file.getOriginalFilename();
             //获取后缀
             String suffix = oldName.substring(oldName.lastIndexOf("."));
             //添加数据库的操作
-            master.setMasterImg(uuidName+suffix);
+            master.setMasterImg(uuidName + suffix);
             String realPath = session.getServletContext().getRealPath("/");
             String[] strings = realPath.split("ROOT");
-            String uploadPath = strings[0]+"upload";//文件上传的路径
+            String uploadPath = strings[0] + "upload";//文件上传的路径
 //            System.out.println(uploadPath+"//"+file.getOriginalFilename());
-            file.transferTo(new File(uploadPath+"/"+uuidName+suffix));
+            file.transferTo(new File(uploadPath + "/" + uuidName + suffix));
         }
         System.out.println(master);
         masterService.modifyMaster(master);
@@ -78,8 +82,24 @@ public class MasterController {
 
     @RequestMapping("queryBlur")
     @ResponseBody
-    public Map<String,Object> query(String value, String sort, Integer page, Integer rows) {
+    public Map<String, Object> query(String value, String sort, Integer page, Integer rows) {
         Map<String, Object> map = masterService.queryBlur(sort, value, page, rows);
         return map;
     }
+
+    //其中经历文件上传,上传但是没有保存在服务器中,然后就导入
+    @RequestMapping("batchAdd")
+    public void batchAdd(MultipartFile file) {
+
+        ExcelReader reader = null;
+        try {
+            reader = ExcelUtil.getReader(file.getInputStream());
+            List<Master> list = reader.readAll(Master.class);
+            System.out.println(list);
+            masterService.batchAdd(list);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

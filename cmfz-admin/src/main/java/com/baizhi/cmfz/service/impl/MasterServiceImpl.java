@@ -49,4 +49,9 @@ public class MasterServiceImpl implements MasterService{
         map.put("rows",masters);
         return map;
     }
+
+    @Override
+    public Integer batchAdd(List<Master> masters) {
+        return masterDAO.insertBatch(masters);
+    }
 }

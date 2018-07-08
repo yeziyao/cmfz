@@ -23,4 +23,6 @@ public interface MasterDAO {
     //模糊查询的总数
     public Integer countBlur(@Param("sort") String sort, @Param("value") String value, @Param("start") Integer start, @Param("pagesize") Integer pagesize);
 
+    //批量插入
+    public Integer insertBatch(@Param("masters") List<Master> masters);
 }
