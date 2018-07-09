@@ -52,7 +52,7 @@
                             $("#ff2").form("submit", {
                                 url: '${pageContext.request.contextPath}/master/batchAdd',
                                 success: function (e) {
-                                    $('#dg1').datagrid('reload');
+                                    $("#dg1").datagrid('reload');
                                     $('#dd1').dialog('close');
                                 }
                             });
@@ -159,6 +159,7 @@
     </div>
 
     <a id="pic_batchAdd" class="easyui-linkbutton" data-options="iconCls:'icon-add',text:'批量插入'"></a>
+    <a href="/master/export" class="easyui-linkbutton" data-options="iconCls:'icon-20130406011050744_easyicon_net_16',text:'导出'"></a>
 </div>
 <div id="dd1"></div>
 

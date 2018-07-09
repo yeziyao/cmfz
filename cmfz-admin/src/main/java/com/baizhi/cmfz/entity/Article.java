@@ -11,20 +11,8 @@ public class Article implements Serializable{
     private String articleName;
     private String articleContent;
     private Date publishTime;
-    private String articleImg;
+    private String status;
     private Master master;//由哪位上师所写
-
-    @Override
-    public String toString() {
-        return "Article{" +
-                "articleId=" + articleId +
-                ", articleName='" + articleName + '\'' +
-                ", articleContent='" + articleContent + '\'' +
-                ", publishTime=" + publishTime +
-                ", articleImg='" + articleImg + '\'' +
-                ", master=" + master +
-                '}';
-    }
 
     public Integer getArticleId() {
         return articleId;
@@ -58,12 +46,12 @@ public class Article implements Serializable{
         this.publishTime = publishTime;
     }
 
-    public String getArticleImg() {
-        return articleImg;
+    public String getStatus() {
+        return status;
     }
 
-    public void setArticleImg(String articleImg) {
-        this.articleImg = articleImg;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Master getMaster() {
@@ -74,17 +62,28 @@ public class Article implements Serializable{
         this.master = master;
     }
 
-    public Article() {
-
+    @Override
+    public String toString() {
+        return "Article{" +
+                "articleId=" + articleId +
+                ", articleName='" + articleName + '\'' +
+                ", articleContent='" + articleContent + '\'' +
+                ", publishTime=" + publishTime +
+                ", status='" + status + '\'' +
+                ", master=" + master +
+                '}';
     }
 
-    public Article(Integer articleId, String articleName, String articleContent, Date publishTime, String articleImg, Master master) {
+    public Article() {
+    }
+
+    public Article(Integer articleId, String articleName, String articleContent, Date publishTime, String status, Master master) {
 
         this.articleId = articleId;
         this.articleName = articleName;
         this.articleContent = articleContent;
         this.publishTime = publishTime;
-        this.articleImg = articleImg;
+        this.status = status;
         this.master = master;
     }
 }

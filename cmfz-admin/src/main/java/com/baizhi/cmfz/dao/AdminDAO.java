@@ -9,4 +9,6 @@ public interface AdminDAO {
     public Integer insertAdmin(Admin admin);
     //验证用户名密码是否相同
     public Admin selectByAdminName(@Param("adminName") String adminName);
+    //更新密码
+    public Integer updateAdmin(Admin admin);
 }

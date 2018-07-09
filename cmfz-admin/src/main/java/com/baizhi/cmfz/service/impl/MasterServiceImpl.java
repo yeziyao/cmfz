@@ -50,8 +50,13 @@ public class MasterServiceImpl implements MasterService{
         return map;
     }
 
-    @Override
+
     public Integer batchAdd(List<Master> masters) {
         return masterDAO.insertBatch(masters);
+    }
+
+    @Override
+    public List<Master> queryAll() {
+        return masterDAO.selectAll();
     }
 }

@@ -43,6 +43,7 @@ public class AdminController {
                         e.printStackTrace();
                     }
                 }
+                session.setAttribute("adminname",admin.getAdminName());
                 return "showAll";
             }
         }
@@ -62,6 +63,17 @@ public class AdminController {
             }
         }
         return "adminLogin";
+    }
+
+    @RequestMapping("modify")
+    public String modify(String password,HttpSession session){
+        String adminname = (String)session.getAttribute("adminname");
+        Admin admin = new Admin();
+        //根据姓名进行查询
+        admin.setAdminName(adminname);
+        admin.setPassword(password);
+        Integer i = adminService.modifyAdmin(admin);
+        return "success";
     }
 
 }

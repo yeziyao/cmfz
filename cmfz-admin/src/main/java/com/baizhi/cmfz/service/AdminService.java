@@ -8,4 +8,6 @@ public interface AdminService {
     public Integer addAdmin(Admin admin);
     //登录功能
     public Admin queryByName(Admin admin);
+    //修改密码
+    public Integer modifyAdmin(Admin admin);
 }

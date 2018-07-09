@@ -24,7 +24,7 @@ public class AdminServiceImpl implements AdminService {
         return adminDAO.insertAdmin(admin);
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
     public Admin queryByName(Admin admin) {
         Admin ad = adminDAO.selectByAdminName(admin.getAdminName());
         String pwd = EncryptionUtil.encryptionCode(admin.getPassword() + ad.getSalt());
@@ -32,5 +32,14 @@ public class AdminServiceImpl implements AdminService {
             return ad;
         }
         return null;
+    }
+
+    public Integer modifyAdmin(Admin admin) {
+        //根据名字查询到盐
+        Admin ad = adminDAO.selectByAdminName(admin.getAdminName());
+        //将新的密码加盐进行加密之后再赋值给对象
+        String pwd = EncryptionUtil.encryptionCode(admin.getPassword() + ad.getSalt());
+        admin.setPassword(pwd);
+        return adminDAO.updateAdmin(admin);
     }
 }

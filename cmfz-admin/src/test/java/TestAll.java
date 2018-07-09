@@ -1,6 +1,8 @@
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
+import com.baizhi.cmfz.entity.Admin;
 import com.baizhi.cmfz.entity.Master;
+import com.baizhi.cmfz.service.AdminService;
 import com.baizhi.cmfz.service.MasterService;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -11,14 +13,13 @@ import java.util.List;
 import java.util.Map;
 
 public class TestAll {
-   /* @Test
+   @Test
     public void test01(){
         ApplicationContext ctx = new ClassPathXmlApplicationContext("/applicationContext.xml");
         AdminService adminService = (AdminService) ctx.getBean("adminServiceImpl");
-        Admin admin = new Admin(null,"张三","123456",null);
-        Admin ad = adminService.queryByName(admin);
-        System.out.println(ad);
-    }*/
+        Admin admin = new Admin(null,"zs","111111",null);
+        adminService.addAdmin(admin);
+    }
 
     @Test
     public void test02(){

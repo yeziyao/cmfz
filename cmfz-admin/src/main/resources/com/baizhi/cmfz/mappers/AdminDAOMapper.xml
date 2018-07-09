@@ -10,4 +10,11 @@
         select * from admin
         where adminName=#{adminName}
     </select>
+
+    <update id="updateAdmin">
+        update admin
+        set password=#{password}
+        where adminName=#{adminName}
+    </update>
+
 </mapper>

@@ -1,21 +1,24 @@
 package com.baizhi.cmfz.controller;
 
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.baizhi.cmfz.entity.Master;
 import com.baizhi.cmfz.service.MasterService;
-import jdk.internal.util.xml.impl.Input;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -90,7 +93,6 @@ public class MasterController {
     //其中经历文件上传,上传但是没有保存在服务器中,然后就导入
     @RequestMapping("batchAdd")
     public void batchAdd(MultipartFile file) {
-
         ExcelReader reader = null;
         try {
             reader = ExcelUtil.getReader(file.getInputStream());
@@ -102,4 +104,31 @@ public class MasterController {
         }
     }
 
+    /*文件导出不能使用异步方式,因为异步都是支持的json和xml,
+    * 不支持流*/
+    @RequestMapping("/export")
+    public void exportExcel(HttpServletResponse resp) throws IOException {
+        List<Master> masters= masterService.queryAll();
+        // Excel文件
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("c118", "上师信息表"), Master.class, masters);
+        ServletOutputStream out = resp.getOutputStream();
+        // 文件下载 设置响应头
+        // 注意：响应头 默认使用的编码格式iso-8859-1
+
+        String fileName = new String("上师信息.xls".getBytes(), "iso-8859-1");
+
+        resp.setContentType("application/vnd.ms-excel"); //响应类型  text/html  application/json
+        resp.setHeader("content-disposition","attachment;fileName="+fileName);
+        // 导出 文件下载的方式
+        workbook.write(out);
+        out.close();
+    }
+
+    //查询所有上师信息
+    @RequestMapping("queryAllName")
+    @ResponseBody
+    public List<Master> queryAll(){
+        List<Master> masters = masterService.queryAll();
+        return masters;
+    }
 }

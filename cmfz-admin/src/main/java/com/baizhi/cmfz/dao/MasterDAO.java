@@ -25,4 +25,7 @@ public interface MasterDAO {
 
     //批量插入
     public Integer insertBatch(@Param("masters") List<Master> masters);
+
+    //查询所有
+    public List<Master> selectAll();
 }

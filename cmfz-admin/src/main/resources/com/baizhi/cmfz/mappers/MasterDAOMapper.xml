@@ -45,4 +45,9 @@
         </foreach>
     </insert>
 
+    <select id="selectAll" resultType="com.baizhi.cmfz.entity.Master">
+        select *
+        from master
+    </select>
+
 </mapper>

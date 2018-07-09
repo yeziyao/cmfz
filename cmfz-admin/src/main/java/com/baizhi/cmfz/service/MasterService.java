@@ -20,4 +20,7 @@ public interface MasterService {
 
     //批量插入上师信息
     public Integer batchAdd(List<Master> masters);
+
+    //导出上师信息,查询所有
+    public List<Master> queryAll();
 }

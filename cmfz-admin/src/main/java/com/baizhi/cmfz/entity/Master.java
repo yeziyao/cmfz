@@ -1,5 +1,6 @@
 package com.baizhi.cmfz.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -9,9 +10,13 @@ import java.util.List;
 @Component
 public class Master implements Serializable{
 
+    @Excel(name="id")
     private Integer masterId;
+    @Excel(name = "name")
     private String masterName;
+    @Excel(name = "img")
     private String masterImg;
+    @Excel(name = "intro")
     private String intro;
     private List<Article> articles = new ArrayList<Article>();
     private List<User> users = new ArrayList<User>();
