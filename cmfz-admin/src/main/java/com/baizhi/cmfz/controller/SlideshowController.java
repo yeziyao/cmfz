@@ -20,6 +20,7 @@ public class SlideshowController {
     @Autowired
     private SlideshowService slideshowService;
 
+
     @RequestMapping("queryAll")
     @ResponseBody
     public Map<String, Object> queryAll(Integer page, Integer rows) {

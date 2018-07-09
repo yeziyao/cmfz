@@ -12,18 +12,30 @@
             valueField: 'masterId',
             textField: 'masterName'
         });
+        $('#status').switchbutton({
+            checked: false,
+            value:'off',
+            onChange: function (checked) {
+                if (checked == true) {
+                    $(this).val('on');
+                }
+                if (checked == false) {
+                    $(this).val('off');
+                }
+            }
+        });
     });
 
     function add() {
         $.post(
-            "/article/addArt",{
-                articleName:$('#name').val(),
-                masterId:$('#cc').combobox('getValue'),
-                status:$('#status').val(),
-                articleContent:editor.txt.html()
-            },function (data) {
+            "/article/addArt", {
+                articleName: $('#name').val(),
+                masterId: $('#cc').combobox('getValue'),
+                status: $('#status').val(),
+                articleContent: editor.txt.html()
+            }, function (data) {
                 $('#addArt').form('reset');
-            },"json"
+            }, "json"
         );
     }
 
@@ -35,7 +47,8 @@
 </script>
 <form id="addArt" method="post" enctype="multipart/form-data" style="background-color: #f2c56d;height: 100%">
     <div>
-        文章标题:&nbsp;&nbsp;<input id="name" class="easyui-validatebox" type="text" name="articleName" style="width:200px"/>
+        文章标题:&nbsp;&nbsp;<input id="name" class="easyui-validatebox" type="text" name="articleName"
+                                style="width:200px"/>
     </div>
     <br/>
     <div>
@@ -43,7 +56,8 @@
     </div>
     <br/>
     <div>
-        文章状态:&nbsp;&nbsp;  <input  id="status" name="status" class="easyui-switchbutton" data-options="onText:'上架',offText:'未上架'">
+        文章状态:&nbsp;&nbsp; <input id="status" name="status" class="easyui-switchbutton"
+                                 data-options="onText:'上架',offText:'未上架'">
     </div>
     <br/>
     <div>

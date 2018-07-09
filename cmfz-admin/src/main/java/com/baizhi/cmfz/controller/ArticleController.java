@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -70,4 +71,16 @@ public class ArticleController {
         }
         return result;
     }
+
+
+
+
+    @RequestMapping("queryAll")
+    @ResponseBody
+    public Map<String, Object> queryAll(Integer page, Integer rows) {
+        Map<String, Object> map = articleService.queryForPage(page, rows);
+        System.out.println(map);
+        return map;
+    }
+
 }

@@ -13,6 +13,20 @@ public class Article implements Serializable{
     private Date publishTime;
     private String status;
     private Master master;//由哪位上师所写
+    private String masterName;
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "articleId=" + articleId +
+                ", articleName='" + articleName + '\'' +
+                ", articleContent='" + articleContent + '\'' +
+                ", publishTime=" + publishTime +
+                ", status='" + status + '\'' +
+                ", master=" + master +
+                ", masterName='" + masterName + '\'' +
+                '}';
+    }
 
     public Integer getArticleId() {
         return articleId;
@@ -62,22 +76,19 @@ public class Article implements Serializable{
         this.master = master;
     }
 
-    @Override
-    public String toString() {
-        return "Article{" +
-                "articleId=" + articleId +
-                ", articleName='" + articleName + '\'' +
-                ", articleContent='" + articleContent + '\'' +
-                ", publishTime=" + publishTime +
-                ", status='" + status + '\'' +
-                ", master=" + master +
-                '}';
+    public String getMasterName() {
+        return masterName;
+    }
+
+    public void setMasterName(String masterName) {
+        this.masterName = masterName;
     }
 
     public Article() {
+
     }
 
-    public Article(Integer articleId, String articleName, String articleContent, Date publishTime, String status, Master master) {
+    public Article(Integer articleId, String articleName, String articleContent, Date publishTime, String status, Master master, String masterName) {
 
         this.articleId = articleId;
         this.articleName = articleName;
@@ -85,5 +96,6 @@ public class Article implements Serializable{
         this.publishTime = publishTime;
         this.status = status;
         this.master = master;
+        this.masterName = masterName;
     }
 }

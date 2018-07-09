@@ -2,8 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
 <mapper namespace="com.baizhi.cmfz.dao.ArticleDAO">
 
+    <!-- 配置多对一映射关系 -->
+    <resultMap type="com.baizhi.cmfz.entity.Article" id="article">
+        <id property="articleId" column="articleId" />
+        <result property="articleName" column="articleName" />
+        <result property="articleContent" column="articleContent" />
+        <result property="publishTime" column="publishTime" />
+        <result property="status" column="status" />
+        <!-- 建立多对一，通过association建立 -->
+        <association property="master" javaType="com.baizhi.cmfz.entity.Master">
+            <id property="masterId" column="masterId" />
+            <result property="masterName" column="masterName" />
+            <result property="masterImg" column="masterImg" />
+            <result property="intro" column="intro" />
+        </association>
+    </resultMap>
+
     <insert id="insertArticle">
         insert into article
         values(#{articleId},#{articleName},#{articleContent},#{publishTime},#{status},#{master.masterId})
     </insert>
+
+    <select id="selectForPage" resultMap="article">
+        SELECT * FROM
+        article LEFT JOIN master
+        ON article.masterid = master.masterid
+        LIMIT #{start},#{pagesize}
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        select count(*) from article
+    </select>
 </mapper>

@@ -1,30 +1,109 @@
-<%@page pageEncoding="utf-8" isELIgnored="false" %>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>wangEditor demo</title>
-    <script type="text/javascript">
-        function test() {
-            alert(editor.txt.html());
-        }
-    </script>
-</head>
-<body>
-<div id="editor">
-    <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
-</div>
-<button id="btn" onclick="test()">点击获取富文本编辑器中的内容</button>
-
-<!-- 注意， 只需要引用 JS，无需引用任何 CSS ！！！-->
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/wangEditor.min.js"></script>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
 <script type="text/javascript">
-    var E = window.wangEditor
-    var editor = new E('#editor');
-    // 或者 var editor = new E( document.getElementById('editor') )
-    editor.customConfig.uploadImgServer = '${pageContext.request.contextPath}/article/upload';  // 上传图片到服务器
-    editor.customConfig.uploadFileName = 'files'; //上传图片的名称
-    editor.create()
+    $(function () {
+
+        $('#dg_art').datagrid({
+            pagination: true,
+            pageList: [5, 10, 15],
+            fitColumns: true,
+            singleSelect: true,
+            remoteSort: false,
+            nowrap: false,
+            pageSize: 5,
+            striped: true,
+            resizeHandle: 'both',
+            url: '/article/queryAll',
+            columns: [[
+                {field: 'articleId', title: '文章编号', width: '15%'},
+                {field: 'articleName', title: '文件标题', width: '15%'},
+                {
+                    field: 'status', title: '文章状态', width: '15%',
+                    formatter: function (value, row, index) {
+                        if (value == 'on') {
+                            return '<span style="color: red;">上架</span>';
+                        } else {
+                            return '<span>未上架</span>';
+                        }
+                    }
+                },
+                {
+                    field: 'publishTime', title: '文章创建时间', width: '25%',
+                    formatter: function (value, row, index) {
+                        var date = new Date(value);
+                        var year = date.getFullYear();
+                        var month = date.getMonth() + 1;
+                        var day = date.getDate();
+                        var hour = date.getHours();
+                        var minutes = date.getMinutes();
+                        var seconds = date.getSeconds();
+                        return year + "年" + month + "月" + day + "日" + "\t" + hour + ":" + minutes + ":" + seconds;
+                    }
+                },
+                {field: 'masterName', title: '所属上师', width: '15%'},
+                {
+                    field: 'operation',
+                    title: '操作',
+                    width: '15%',
+                    formatter: function (value, row, index) {
+                        var str = '<a name="search"></a>&nbsp;<a name="update"></a>';
+                        return str;
+                    }
+                }
+            ]],
+            onLoadSuccess: function (data) {
+                $("a[name='search']").linkbutton({
+                    text: '文章详情',
+                    plain: false,
+                    iconCls: 'icon-accept',
+                });
+                $("a[name='update']").linkbutton({
+                    text: '修改内容',
+                    plain: false,
+                    iconCls: 'icon-edit',
+                    onClick:function () {
+                        var rowData = $("#dg").datagrid('getSelected');
+                        $('#dd').dialog({
+                            title: '修改图片信息',
+                            width: 400,
+                            height: 200,
+                            href: '${pageContext.request.contextPath}/modifySlideshow.jsp',
+                            onLoad: function () {
+                                $("#ff").form('load', rowData);
+                            },
+                            buttons: [{
+                                text: '修改',
+                                handler: function () {
+                                    $("#ff").form("submit", {
+                                        url:'${pageContext.request.contextPath}/slideshow/update',
+                                        success: function (e) {
+                                            console.log(e);
+                                            $('#dg').datagrid('reload');
+                                            $('#dd').dialog('close');
+                                        }
+                                    });
+
+                                }
+                            }, {
+                                text: '关闭',
+                                handler: function () {
+                                    $('#dd').dialog('close');
+                                }
+                            }],
+                        });
+                    }
+                });
+            },
+            view: detailview,
+            detailFormatter: function (rowIndex, rowData) {
+                return '<table><tr>' +
+                    '<td rowspan=2 style="border:0"><img src="http://localhost:8989/upload/' + rowData.slideshowImg + '" style="height:50px;"></td>' +
+                    '</tr></table>';
+            }
+        });
+
+    });
 </script>
-</body>
-</html>
+
+
+<table id="dg_art"></table>
+<div id="dd_art"></div>
