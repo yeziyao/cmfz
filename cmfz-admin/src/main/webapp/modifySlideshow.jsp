@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <form id="ff" method="post" style="text-align: center">
     <div>
         轮播图编号:&nbsp;&nbsp;<input class="easyui-validatebox" type="text" name="slideshowId" readonly/>
@@ -9,7 +10,7 @@
     </div>
     <br/>
     <div>
-        发布时间:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="easyui-validatebox" type="text" name="publishTime"/>
+        发布时间:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="easyui-datetimespinner" type="text" name="publishTime"/>
     </div>
     <br/>
     <div>

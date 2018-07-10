@@ -92,12 +92,6 @@
                         });
                     }
                 });
-            },
-            view: detailview,
-            detailFormatter: function (rowIndex, rowData) {
-                return '<table><tr>' +
-                    '<td rowspan=2 style="border:0"><img src="http://localhost:8989/upload/' + rowData.slideshowImg + '" style="height:50px;"></td>' +
-                    '</tr></table>';
             }
         });
 

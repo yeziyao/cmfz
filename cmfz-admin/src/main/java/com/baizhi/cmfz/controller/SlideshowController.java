@@ -53,7 +53,9 @@ public class SlideshowController {
     }
 
     @RequestMapping("update")
+    @ResponseBody
     public String update(Slideshow slideshow){
+        System.out.println(slideshow);
         slideshowService.modifySlideshow(slideshow);
         return null;
     }

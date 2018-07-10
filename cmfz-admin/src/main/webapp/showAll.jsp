@@ -108,7 +108,7 @@
     </div>
 </div>
 <div data-options="region:'south',split:true" style="height: 40px;background: #5C160C">
-    <div style="text-align: center;font-size:15px; color: #FAF7F7;font-family: 楷体">&copy;百知教育 gaozhy@zparkhr.com.cn
+    <div style="text-align: center;font-size:15px; color: #FAF7F7;font-family: 楷体">&copy;瑶瑶博客 <a href="http://1012.kim/">dyy.blog</a>
     </div>
 </div>
 

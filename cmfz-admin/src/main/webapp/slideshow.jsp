@@ -8,13 +8,18 @@
                     width: 400,
                     height: 200,
                     close: true,
-                    href: '${pageContext.request.contextPath}/addSlideshow.jsp',
+                    href: '/addSlideshow.jsp',
                     buttons: [{
                         text: '添加',
                         handler: function () {
                             $("#ff").form("submit", {
-                                url: '${pageContext.request.contextPath}/slideshow/add',
+                                url: '/slideshow/add',
                                 success: function (e) {
+                                    $.messager.show({
+                                        title: "添加轮播图退出成功",
+                                        msg: "上传成功,窗口将在5秒后关闭",
+                                        timeout: 5000,
+                                    });
                                     $('#dg').datagrid('reload');
                                     $('#dd').dialog('close');
                                 }
@@ -22,6 +27,7 @@
                         }
                     }, {
                         text: '关闭',
+                        iconCls: "icon-cancel",
                         handler: function () {
                             $('#dd').dialog('close');
                         }
@@ -74,11 +80,7 @@
                     title: '操作',
                     width: '15%',
                     formatter: function (value, row, index) {
-//                        var sdata= JSON.stringify(row)
-//                        console.log("原始数据"+sdata);
-//                        var data= encodeURI(sdata);
-//                        console.log("编码后"+data);
-                        var str = '<a name="update"></a>';
+                        var str = '<a name="update" value=' + index + '></a>';
                         return str;
                     }
                 }
@@ -88,12 +90,9 @@
                     text: '修改',
                     plain: false,
                     iconCls: 'icon-edit',
-                    onClick:function () {
-//                        $("#dg").datagrid("selectRow",rowIndex);
-//                        var rowData = $(this).attr("data");
-//                        console.log("获取数据"+rowData);
-//                        var jsondata= decodeURIComponent(rowData)
-//                        console.log("解码数据"+jsondata);
+                    onClick: function () {
+                        /*alert($("a[name='update']").attr("value"));
+                        $("#dg").datagrid("selectRow",$("a[name='update']").attr("value"));*/
                         var rowData = $("#dg").datagrid('getSelected');
                         $('#dd').dialog({
                             title: '修改图片信息',
@@ -107,7 +106,7 @@
                                 text: '修改',
                                 handler: function () {
                                     $("#ff").form("submit", {
-                                        url:'${pageContext.request.contextPath}/slideshow/update',
+                                        url: '${pageContext.request.contextPath}/slideshow/update',
                                         success: function (e) {
                                             console.log(e);
                                             $('#dg').datagrid('reload');

@@ -2,9 +2,9 @@ package com.baizhi.cmfz.controller;
 
 
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.baizhi.cmfz.entity.Master;
 import com.baizhi.cmfz.service.MasterService;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -93,13 +93,17 @@ public class MasterController {
     //其中经历文件上传,上传但是没有保存在服务器中,然后就导入
     @RequestMapping("batchAdd")
     public void batchAdd(MultipartFile file) {
-        ExcelReader reader = null;
+        //参数1:输入流
+        //参数2:pojo
+        //参数3:导入参数对象
         try {
-            reader = ExcelUtil.getReader(file.getInputStream());
-            List<Master> list = reader.readAll(Master.class);
-            System.out.println(list);
-            masterService.batchAdd(list);
-        } catch (IOException e) {
+            ImportParams params = new ImportParams();
+            List<Master> masters = ExcelImportUtil.importExcel(file.getInputStream(),Master.class,params);
+            for (Master master : masters) {
+                System.out.println(master);
+            }
+            masterService.batchAdd(masters);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
