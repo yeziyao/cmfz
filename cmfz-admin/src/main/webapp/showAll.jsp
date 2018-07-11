@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" isELIgnored="false" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/"; %>
@@ -102,7 +103,7 @@
         持名法州后台管理系统
     </div>
     <div style="font-size: 16px;color: #FAF7F7;font-family: 楷体;width: 300px;float:right;padding-top:15px">
-        欢迎您:${adminname} &nbsp;<a id="modifyPassword" class="easyui-linkbutton"
+        欢迎您:<shiro:principal></shiro:principal>&nbsp;<a id="modifyPassword" class="easyui-linkbutton"
                                   data-options="iconCls:'icon-edit',onClick:modify">修改密码</a>&nbsp;
         <a href="http://localhost:8989/admin/login" class="easyui-linkbutton" data-options="iconCls:'icon-01'">退出系统</a>
     </div>

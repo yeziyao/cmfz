@@ -1,19 +1,16 @@
 package com.baizhi.cmfz.controller;
 
 import com.baizhi.cmfz.entity.Admin;
-import com.baizhi.cmfz.entity.User;
 import com.baizhi.cmfz.service.AdminService;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 /**
  * @Description 与admin相关的一些操作
@@ -27,30 +24,26 @@ public class AdminController {
     private AdminService adminService;
 
     @RequestMapping("login")
-    public String login(Admin admin, String enCode, String isRememberUsername, HttpSession session, HttpServletResponse response){
+    public String login(Admin admin, String enCode, boolean isRememberUsername, HttpSession session){
+        //在web环境中安全管理器会自动进行初始化
+        //创建主体对象
+        Subject subject = SecurityUtils.getSubject();
         String code = (String) session.getAttribute("code");
         if(code.equalsIgnoreCase(enCode) && !enCode.isEmpty()){
-            //验证码正确进入下一步
-            if(adminService.queryByName(admin)!=null){
-                //对密码进行验证,验证正确,将用户名存到cookie中
-                if( isRememberUsername!=null && isRememberUsername.equals("true")){
-                    //勾选复选框按钮传入结果为TRUE,否则为null
-                    try {
-                        String adminname = URLEncoder.encode(admin.getAdminName(),"utf-8");
-                        Cookie c = new Cookie("adminname",adminname);
-                        response.addCookie(c);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+            //验证码正确,判断用户名密码是否正确
+            try {
+                subject.login(new UsernamePasswordToken(admin.getAdminName(),admin.getPassword(),isRememberUsername));
                 session.setAttribute("adminname",admin.getAdminName());
                 return "showAll";
+            } catch (AuthenticationException e) {
+                e.printStackTrace();
+                return "adminLogin";
             }
         }
         return "adminLogin";
     }
 
-    @RequestMapping("/tologin")
+    /*@RequestMapping("/tologin")
     public String toLogin(HttpServletRequest request) throws Exception{
         Cookie cs[] = request.getCookies();
         if(cs!=null){
@@ -63,7 +56,7 @@ public class AdminController {
             }
         }
         return "adminLogin";
-    }
+    }*/
 
     @RequestMapping("modify")
     public String modify(String password,HttpSession session){

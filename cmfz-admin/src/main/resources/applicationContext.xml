@@ -6,21 +6,22 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tool http://www.springframework.org/schema/tool/spring-tool.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <!--扫描-->
     <context:component-scan base-package="com.baizhi.cmfz">
-        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"></context:exclude-filter>
     </context:component-scan>
 
     <!--要使用aspectj风格的aop-->
     <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
 
     <!--配置数据源-->
-    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"  init-method="init" destroy-method="close">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/test"/>
         <property name="username" value="root"/>
         <property name="password" value=""/>
     </bean>
-    
-    
+
+
     <!--配置工厂-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -39,5 +40,58 @@
 
     <!--注解事务-->
     <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
-    
+
+    <!--
+    shiro过滤器工厂对象 负责处理拦截的所有请求
+    -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"></property>
+        <!--登录页的URL地址-->
+        <property name="loginUrl" value="/adminLogin.jsp"></property>
+        <!--
+        定义拦截规则  url=过滤器的简称
+        过滤器:filter 对请求和响应进行预处理
+        filter:3个方法(初始化,销毁,dofilter(req,resp,chain))
+        -->
+        <property name="filterChainDefinitions">
+            <value>
+                /js/**=anon
+                /validate/validatecode=anon
+                /admin/login=anon
+                /css/**=anon
+                /img/**=anon
+                /themes/**=anon
+                /index.jsp=anon
+                /**=user
+            </value>
+        </property>
+    </bean>
+    <!--配置web环境下的安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--引用自定义的数据源类-->
+        <property name="realms">
+            <list>
+                <ref bean="myRealm"></ref>
+            </list>
+        </property>
+        <property name="rememberMeManager" ref="rememberMeManager"></property>
+    </bean>
+    <bean id="rememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="simpleCookie"></property>
+    </bean>
+    <bean id="simpleCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <property name="name" value="rememberMe"></property>
+        <property name="maxAge" value="604800"></property>
+        <property name="path" value="/"></property>
+    </bean>
+
+    <bean id="myRealm" class="com.baizhi.cmfz.utils.MyRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"></property>
+    </bean>
+
+    <!--声明凭证匹配器对象-->
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"></property>
+        <property name="hashIterations" value="123"></property>
+    </bean>
 </beans>
