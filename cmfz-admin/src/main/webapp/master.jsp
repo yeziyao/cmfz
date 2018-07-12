@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false" %>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <script type="text/javascript">
     $(function () {
         $("#pic_add1").linkbutton({
@@ -66,9 +67,6 @@
                 });
             }
         });
-
-
-
 
 
         $("#pic_edit").linkbutton({
@@ -157,9 +155,10 @@
     <div id="mm" style="width:120px">
         <div data-options="name:'masterName',iconCls:'icon-ok'">法名</div>
     </div>
-
+    <shiro:hasRole name="admin">
     <a id="pic_batchAdd" class="easyui-linkbutton" data-options="iconCls:'icon-add',text:'批量插入'"></a>
     <a href="/master/export" class="easyui-linkbutton" data-options="iconCls:'icon-20130406011050744_easyicon_net_16',text:'导出'"></a>
+    </shiro:hasRole>
 </div>
 <div id="dd1"></div>
 

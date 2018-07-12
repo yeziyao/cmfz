@@ -1,20 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "../mybatis-3-mapper.dtd" >
 <mapper namespace="com.baizhi.cmfz.dao.AdminDAO">
-     <insert id="insertAdmin">
-         insert into admin
-         VALUES(#{adminId},#{adminName},#{password},#{salt})
-     </insert>
-
-    <select id="selectByAdminName" resultType="com.baizhi.cmfz.entity.Admin">
+    <select id="selectByAdminName" resultType="Admin">
         select * from admin
         where adminName=#{adminName}
     </select>
 
-    <update id="updateAdmin">
-        update admin
-        set password=#{password}
-        where adminName=#{adminName}
-    </update>
+    <select id="selectRolesByName" resultType="Role">
+        SELECT
+        *
+        FROM
+        role
+        WHERE
+        id IN (
+        SELECT
+        roleid
+        FROM
+        admin_role
+        WHERE
+        adminId = (
+        SELECT
+        adminid
+        FROM
+        admin
+        WHERE
+        adminName = #{adminName}
+        )
+        )
+    </select>
+
+    <select id="selectPermsByName" resultType="Permission">
+        SELECT
+        *
+        FROM
+        permission
+        WHERE
+        id IN (
+        SELECT
+        permissionId
+        FROM
+        role_permission
+        WHERE
+        roleId IN (
+        SELECT
+        id
+        FROM
+        role
+        WHERE
+        id IN (
+        SELECT
+        roleid
+        FROM
+        admin_role
+        WHERE
+        adminId = (
+        SELECT
+        adminid
+        FROM
+        admin
+        WHERE
+        adminName = #{adminName}
+        )
+        )
+        )
+        )
+    </select>
 
 </mapper>

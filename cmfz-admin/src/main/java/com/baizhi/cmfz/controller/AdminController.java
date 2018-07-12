@@ -33,6 +33,7 @@ public class AdminController {
             //验证码正确,判断用户名密码是否正确
             try {
                 subject.login(new UsernamePasswordToken(admin.getAdminName(),admin.getPassword(),isRememberUsername));
+                System.out.println(subject.isPermitted("user:add"));
                 session.setAttribute("adminname",admin.getAdminName());
                 return "showAll";
             } catch (AuthenticationException e) {
@@ -58,15 +59,5 @@ public class AdminController {
         return "adminLogin";
     }*/
 
-    @RequestMapping("modify")
-    public String modify(String password,HttpSession session){
-        String adminname = (String)session.getAttribute("adminname");
-        Admin admin = new Admin();
-        //根据姓名进行查询
-        admin.setAdminName(adminname);
-        admin.setPassword(password);
-        Integer i = adminService.modifyAdmin(admin);
-        return "success";
-    }
 
 }

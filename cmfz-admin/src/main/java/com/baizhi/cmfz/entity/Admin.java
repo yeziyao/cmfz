@@ -10,6 +10,7 @@ public class Admin implements Serializable{
     private String adminName;
     private String password;
     private String salt;
+    private String status;
 
     @Override
     public String toString() {
@@ -18,6 +19,7 @@ public class Admin implements Serializable{
                 ", adminName='" + adminName + '\'' +
                 ", password='" + password + '\'' +
                 ", salt='" + salt + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 
@@ -53,15 +55,24 @@ public class Admin implements Serializable{
         this.salt = salt;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Admin() {
 
     }
 
-    public Admin(Integer adminId, String adminName, String password, String salt) {
+    public Admin(Integer adminId, String adminName, String password, String salt, String status) {
 
         this.adminId = adminId;
         this.adminName = adminName;
         this.password = password;
         this.salt = salt;
+        this.status = status;
     }
 }

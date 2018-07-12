@@ -1,7 +1,9 @@
 package com.baizhi.cmfz.utils;
 
-import com.baizhi.cmfz.dao.AdminDAO;
 import com.baizhi.cmfz.entity.Admin;
+import com.baizhi.cmfz.entity.Permission;
+import com.baizhi.cmfz.entity.Role;
+import com.baizhi.cmfz.service.AdminService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
@@ -10,6 +12,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,30 +24,30 @@ import java.util.UUID;
 
 public class MyRealm extends AuthorizingRealm {
     @Autowired
-    private AdminDAO adminDAO;
+    private AdminService adminService;
 
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-       //获取主身份信息
+        System.out.println("aaaaaaaaaaaa");
+        //获取主身份信息
         String adminname= (String) principalCollection.getPrimaryPrincipal();
-        Admin admin = adminDAO.selectByAdminName(adminname);
-        if(admin!=null){
-            SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-            info.addRole("admin");
-            info.addRole("user");
-            info.addStringPermission("user:add");
-            info.addStringPermission("user:delete");
-            info.addStringPermission("user:query");
-            return info;
+        List<Role> roles = adminService.queryRolesByName(adminname);
+        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+        for (Role role : roles) {
+            info.addRole(role.getRoleTag());
         }
-        return null;
+        List<Permission> permissions = adminService.queryPermsByName(adminname);
+        for (Permission permission : permissions) {
+            info.addStringPermission(permission.getPermissionTag());
+        }
+        return info;
     }
 
 
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken)authenticationToken;
-        String username = usernamePasswordToken.getUsername();
+        String adminName= usernamePasswordToken.getUsername();
         //根据名字从数据中进行查询
-        Admin admin = adminDAO.selectByAdminName(username);
+        Admin admin = adminService.queryByName(adminName);
         if(admin!=null){
             return new SimpleAuthenticationInfo(admin.getAdminName(),admin.getPassword(), ByteSource.Util.bytes(admin.getSalt()), UUID.randomUUID().toString());
         }

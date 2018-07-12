@@ -1,13 +1,19 @@
 package com.baizhi.cmfz.service;
 
 import com.baizhi.cmfz.entity.Admin;
-import com.baizhi.cmfz.entity.User;
+import com.baizhi.cmfz.entity.Permission;
+import com.baizhi.cmfz.entity.Role;
+
+import java.util.List;
 
 public interface AdminService {
-    //注册功能
-    public Integer addAdmin(Admin admin);
-    //登录功能
-    public Admin queryByName(Admin admin);
-    //修改密码
-    public Integer modifyAdmin(Admin admin);
+    //根据姓名查询管理员信息
+    public Admin queryByName(String adminName);
+
+    //根据姓名查询所属的角色
+    public List<Role> queryRolesByName(String amdinName);
+
+    //根据姓名查询所属的权限
+    public List<Permission> queryPermsByName(String amdinName);
+
 }
